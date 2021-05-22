@@ -1,0 +1,86 @@
+from tkinter import *
+import os
+import pyqrcode
+window = Tk()
+window.title("QR Code Generator")
+def generate():
+    if len(Subject.get())!=0 :
+        global qr,photo
+        qr = pyqrcode.create(Subject.get())
+        photo = BitmapImage(data = qr.xbm(scale=8))
+    else:
+        messagebox.showinfo("Please Enter some Subject")
+    try:
+        showcode()
+    except:
+        pass
+def showcode():
+    imageLabel.config(image = photo)
+    subLabel.config(text="QR of " + Subject.get())
+Sub = Label(window,text="Enter subject")
+Sub.grid(row =0,column =0,sticky=N+S+W+E)
+Subject = StringVar()
+SubEntry = Entry(window,textvariable = Subject)
+SubEntry.grid(row =0,column =1,sticky=N+S+W+E)
+name = StringVar()
+button = Button(window,text = "Generate using text",width=15,command = generate)
+button.grid(row =0,column =3,sticky=N+S+W+E)
+imageLabel = Label(window)
+imageLabel.grid(row =2,column =1,sticky=N+S+W+E)
+
+#Text to audio
+
+from gtts import gTTS
+import os
+myText="QR Code Generator Using Python. Team members are Dhyey Udeshi, Dheeraj Naidu and Dhruva Chaitanya.Guided by Chitra maam"
+language='en'
+output=gTTS(text=myText,lang=language,slow=False)
+output.save("output.mp3")
+os.system("start output.mp3")
+
+#Speech to text
+
+import speech_recognition as sr
+r=sr.Recognizer()
+with sr.Microphone() as source:
+ voiceee = Label(window,text="Generate ")
+ voiceee.grid(row=0, column=3)
+ audio=r.listen(source)
+try:
+    text=r.recognize_google(audio)
+    l = ("You said: {}".format(text))
+    w = ("You said" + str(text))
+    outputt = Label(window,text=l)
+    outputt.grid(row=3,column=0)
+except:
+     qwe = Label(window,text="Sorry could not recognize your voice")
+     qwe.grid(row=3,column=0)
+
+def generate():
+    if len(l)!=0 :
+        global qr,photo
+        qr = pyqrcode.create(l)
+        photo = BitmapImage(data = qr.xbm(scale=8))
+    else:
+        messagebox.showinfo("Please Enter some Subject")
+    try:
+        showcode()
+    except:
+        pass
+def showcode():
+    imageLabel.config(image = photo)
+    subLabel.config(text="QR of " + l)
+
+vib = Button(window,text="Generate using voice",command=generate,padx=5,pady=5,bd=5)
+vib.grid(row=0,column=2)
+
+#making this resposnsive
+
+Rows = 3
+Columns = 3
+for row in range(Rows+1):
+    window.grid_rowconfigure(row,weight=1)
+for col in range(Columns+1):
+    window.grid_columnconfigure(col,weight=1)
+
+window.mainloop()
